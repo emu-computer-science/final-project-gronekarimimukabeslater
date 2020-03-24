@@ -11,8 +11,9 @@ public class PlayerControl : MonoBehaviour {
     private Rigidbody2D body;
     private bool isJumping;
     private bool isDucking;
+    private bool isDiving;
     private BoxCollider2D playerCollider;
-    float m_ScaleX, mScaleY;
+    float mScaleX, mScaleY;
 
     void Awake() {
         body = player.GetComponent<Rigidbody2D>();
@@ -22,6 +23,7 @@ public class PlayerControl : MonoBehaviour {
     {
         playerCollider = GetComponent<BoxCollider2D>();
         mScaleY = playerCollider.size.y;
+        mScaleX = playerCollider.size.x;
     }
 
     void Update() {
@@ -29,6 +31,7 @@ public class PlayerControl : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.UpArrow) && !isJumping) {
             body.velocity += Vector2.up * jumpVelocity;
             isJumping = true;
+            isDiving = true; //Prevents the player from diving in mid air
         }
         
         // Only Allow 1 jump at a time (No Infinite Jumps)
@@ -43,7 +46,7 @@ public class PlayerControl : MonoBehaviour {
             body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultipler - 1) * Time.deltaTime;
         }
 
-        //Basic Ducking
+        //Ducking
         if(Input.GetKeyDown(KeyCode.DownArrow) && !isDucking)
         {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y / 2);
@@ -60,6 +63,30 @@ public class PlayerControl : MonoBehaviour {
         if(Input.GetKeyUp(KeyCode.DownArrow))
         {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y * 2);
+        }
+
+
+        //Diving
+        if(Input.GetKeyDown(KeyCode.RightArrow) && !isDiving)
+        {
+            body.velocity += Vector2.up * (jumpVelocity);
+            playerCollider.size = new Vector2(playerCollider.size.x * 2, playerCollider.size.y / 2);
+            body.transform.localScale =  new Vector2(body.transform.localScale.x * 2, body.transform.localScale.y /2); //This will be removed once we have player sprites
+            isDiving = true;
+            isJumping = true;
+        }
+
+        if(playerCollider.size.x == mScaleX && body.velocity.y == 0)
+        {
+            isJumping = false;
+            isDiving = false;
+        }
+
+        if(isDiving == true && body.velocity.y == 0)
+        {
+            playerCollider.size = new Vector2(playerCollider.size.x / 2, playerCollider.size.y * 2);
+            body.transform.localScale = new Vector2(body.transform.localScale.x / 2, body.transform.localScale.y * 2); //This will be removed once we have player sprites
+            isDucking = false;
         }
     }
 }
