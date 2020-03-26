@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour {
 
@@ -89,4 +90,8 @@ public class PlayerControl : MonoBehaviour {
             isDucking = false;
         }
     }
+	
+	private void OnTriggerEnter2D(Collider2D collider) {
+		SceneManager.LoadScene("Main");
+	}
 }
