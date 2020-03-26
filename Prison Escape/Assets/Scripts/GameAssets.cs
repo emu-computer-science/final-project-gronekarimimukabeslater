@@ -5,8 +5,9 @@ using UnityEngine;
 // House assets
 // Obstacles, etc.
 
-public class GameAssets : MonoBehaviour
-{
+public class GameAssets : MonoBehaviour {
+	
+	private int score = 0;
     public static GameAssets instance;
 	
 	public static GameAssets GetInstance() {
@@ -17,6 +18,16 @@ public class GameAssets : MonoBehaviour
 		instance = this;
 	}
 	
-	public Sprite lowObstacle;
-	public Transform lowObsBody;
+	// Stores assets for obstacles that 
+	public Transform jumpObsBody;
+	
+	public void increaseScore() {
+		score++;
+		Debug.Log("Current score: " + score);
+	}
+	
+	public void resetScore() {
+		score = 0;
+		Debug.Log("Current score: " + score);
+	}
 }

@@ -93,5 +93,6 @@ public class PlayerControl : MonoBehaviour {
 	
 	private void OnTriggerEnter2D(Collider2D collider) {
 		SceneManager.LoadScene("Main");
+		GameAssets.GetInstance().resetScore();
 	}
 }
