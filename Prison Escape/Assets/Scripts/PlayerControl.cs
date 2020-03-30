@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour {
     public GameObject player;
     public float jumpVelocity = 8f;
     public float fallMultipler = 2.5f;
+    public float diveFloatTime = .5f;
 
     private Rigidbody2D body;
     private bool isJumping;
@@ -15,6 +16,8 @@ public class PlayerControl : MonoBehaviour {
     private bool isDiving;
     private BoxCollider2D playerCollider;
     float mScaleX, mScaleY;
+
+    private float startJump;
 
     void Awake() {
         body = player.GetComponent<Rigidbody2D>();
@@ -66,7 +69,6 @@ public class PlayerControl : MonoBehaviour {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y * 2);
         }
 
-
         //Diving
         if(Input.GetKeyDown(KeyCode.RightArrow) && !isDiving)
         {
@@ -75,6 +77,7 @@ public class PlayerControl : MonoBehaviour {
             body.transform.localScale =  new Vector2(body.transform.localScale.x * 2, body.transform.localScale.y /2); //This will be removed once we have player sprites
             isDiving = true;
             isJumping = true;
+            startJump = Time.realtimeSinceStartup;
         }
 
         if(playerCollider.size.x == mScaleX && body.velocity.y == 0)
@@ -83,12 +86,17 @@ public class PlayerControl : MonoBehaviour {
             isDiving = false;
         }
 
+        if (isDiving && body.velocity.y < 0 && (startJump + diveFloatTime) > Time.realtimeSinceStartup) {
+            body.velocity = new Vector2(0,.2f);
+        }
+
         if(isDiving == true && body.velocity.y == 0)
         {
             playerCollider.size = new Vector2(playerCollider.size.x / 2, playerCollider.size.y * 2);
             body.transform.localScale = new Vector2(body.transform.localScale.x / 2, body.transform.localScale.y * 2); //This will be removed once we have player sprites
             isDucking = false;
         }
+
     }
 	
 	private void OnTriggerEnter2D(Collider2D collider) {

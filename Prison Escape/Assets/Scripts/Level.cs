@@ -54,8 +54,9 @@ public class Level : MonoBehaviour
 	// This method spawns an obstacle
 	private void spawnObstacle(float xPos) {
 		
-		int obstacleType  = Random.Range(1, 4);
-		
+		int obstacleType  = Random.Range(2, 4);
+        obstacleType = 2;
+
 		// Obstacles to jump over
 		if (obstacleType == 1) {
 			Transform jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
@@ -65,7 +66,9 @@ public class Level : MonoBehaviour
 		
 		// Obstacles to dive through
 		if (obstacleType == 2) {
-			obstacleType = 3; //CHANGE AND UPDATE THIS FOR THE DIVE OBSTACLE
+            Transform diveObstacle = Instantiate(GameAssets.GetInstance().diveObsBody);
+            diveObstacle.position = new Vector3(xPos, -2.5f); // Initial position for obstacle
+            obstacleList.Add(new Obstacle(diveObstacle));
 		}
 		
 		// Obstacles to duck under

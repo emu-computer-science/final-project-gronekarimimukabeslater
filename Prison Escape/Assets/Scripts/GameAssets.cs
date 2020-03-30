@@ -21,6 +21,7 @@ public class GameAssets : MonoBehaviour {
 	// Stores assets for obstacles that 
 	public Transform jumpObsBody;
 	public Transform duckObsBody;
+	public Transform diveObsBody;
 	
 	public void increaseScore() {
 		score++;

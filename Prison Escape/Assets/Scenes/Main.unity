@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -279,6 +280,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -409,6 +411,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -520,6 +523,7 @@ MonoBehaviour:
   player: {fileID: 607181621}
   jumpVelocity: 8
   fallMultipler: 2.5
+  diveFloatTime: 1
 --- !u!1 &915514225
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,6 +570,8 @@ MonoBehaviour:
   jumpObsBody: {fileID: 1944635117673161428, guid: 604222dfd177d1b4eae9ac85416c3d22,
     type: 3}
   duckObsBody: {fileID: 3247944440336999151, guid: db6b0ecc40272f440bb692a980586a4b,
+    type: 3}
+  diveObsBody: {fileID: 2467009058855444704, guid: ba3907d29c37d2c48b6e28b78aa0e585,
     type: 3}
 --- !u!1 &1124830893
 GameObject:
