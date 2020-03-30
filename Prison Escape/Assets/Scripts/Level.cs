@@ -59,7 +59,7 @@ public class Level : MonoBehaviour
 		// Obstacles to jump over
 		if (obstacleType == 1) {
 			Transform jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
-			jumpObstacle.position = new Vector3(xPos, -3.6f); // Initial position for obstacle
+			jumpObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
 			obstacleList.Add(new Obstacle(jumpObstacle));
 		}
 		
