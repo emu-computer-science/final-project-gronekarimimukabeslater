@@ -54,8 +54,7 @@ public class Level : MonoBehaviour
 	// This method spawns an obstacle
 	private void spawnObstacle(float xPos) {
 		
-		int obstacleType  = Random.Range(2, 4);
-        obstacleType = 2;
+		int obstacleType  = Random.Range(1, 4);
 
 		// Obstacles to jump over
 		if (obstacleType == 1) {
