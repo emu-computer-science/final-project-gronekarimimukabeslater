@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-	
 	private const float OBSTACLE_SPEED = 5f; // Sets speed of obstacles moving towards player
 	private const float OBSTACLE_DESTROY_POSITION = -15f; // x Position past player where Obstacles get destroyed and score increases
 	private const float ENEMY_START_POSITION = 8f;
 	private const int JUMP_OBSTACLE = 1;
 	private const int DIVE_OBSTACLE = 2;
 	private const int DUCK_OBSTACLE = 3;
+	
 	
 	private List<Obstacle> obstacleList;
 	
@@ -19,12 +19,11 @@ public class Level : MonoBehaviour
 	}
 	
 	private void Start() {
-		spawnObstacle(JUMP_OBSTACLE, ENEMY_START_POSITION);
+		spawnObstacle(ENEMY_START_POSITION);
 	}
 
 	private void Update() {
 		ObstacleMovement();
-
 	}
 	
 	private void ObstacleMovement() {
@@ -44,9 +43,8 @@ public class Level : MonoBehaviour
 				i--;
 
 				// if obstacle is destroyed, spawn a new one
-				spawnObstacle(JUMP_OBSTACLE, ENEMY_START_POSITION);
-
-
+				spawnObstacle(ENEMY_START_POSITION);
+				
 				// Temp score track and printer
 				GameAssets.GetInstance().increaseScore();
 			}
@@ -54,7 +52,9 @@ public class Level : MonoBehaviour
 	}
 
 	// This method spawns an obstacle
-	private void spawnObstacle(float obstacleType, float xPos) {
+	private void spawnObstacle(float xPos) {
+		
+		int obstacleType  = Random.Range(1, 4);
 		
 		// Obstacles to jump over
 		if (obstacleType == 1) {
@@ -65,12 +65,14 @@ public class Level : MonoBehaviour
 		
 		// Obstacles to dive through
 		if (obstacleType == 2) {
-			;
+			obstacleType = 3; //CHANGE AND UPDATE THIS FOR THE DIVE OBSTACLE
 		}
 		
 		// Obstacles to duck under
 		if (obstacleType == 3) {
-			;
+			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
+			duckObstacle.position = new Vector3(xPos, -2.8f); // Initial position for obstacle
+			obstacleList.Add(new Obstacle(duckObstacle));
 		}
 	}
 	
@@ -96,6 +98,7 @@ public class Level : MonoBehaviour
 		}
 	}
 	
+		
 }
 
 
