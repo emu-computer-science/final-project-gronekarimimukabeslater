@@ -74,7 +74,7 @@ public class PlayerControl : MonoBehaviour {
         {
             body.velocity += Vector2.up * (jumpVelocity);
             playerCollider.size = new Vector2(playerCollider.size.x * 2, playerCollider.size.y / 2);
-            body.transform.localScale =  new Vector2(body.transform.localScale.x * 2, body.transform.localScale.y /2); //This will be removed once we have player sprites
+            //body.transform.localScale =  new Vector2(body.transform.localScale.x * 2, body.transform.localScale.y /2); //This will be removed once we have player sprites
             isDiving = true;
             isJumping = true;
             startJump = Time.realtimeSinceStartup;
@@ -93,7 +93,7 @@ public class PlayerControl : MonoBehaviour {
         if(isDiving == true && body.velocity.y == 0)
         {
             playerCollider.size = new Vector2(playerCollider.size.x / 2, playerCollider.size.y * 2);
-            body.transform.localScale = new Vector2(body.transform.localScale.x / 2, body.transform.localScale.y * 2); //This will be removed once we have player sprites
+            //body.transform.localScale = new Vector2(body.transform.localScale.x / 2, body.transform.localScale.y * 2); //This will be removed once we have player sprites
             isDucking = false;
         }
 
