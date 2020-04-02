@@ -18,6 +18,7 @@ public class PlayerControl : MonoBehaviour {
     float mScaleX, mScaleY;
 
     private float startJump;
+    private Animator playerAnimator;
 
     void Awake() {
         body = player.GetComponent<Rigidbody2D>();
@@ -28,6 +29,8 @@ public class PlayerControl : MonoBehaviour {
         playerCollider = GetComponent<BoxCollider2D>();
         mScaleY = playerCollider.size.y;
         mScaleX = playerCollider.size.x;
+
+        playerAnimator = GetComponent<Animator>();
     }
 
     void Update() {
@@ -55,6 +58,12 @@ public class PlayerControl : MonoBehaviour {
         {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y / 2);
             isDucking = true;
+            playerAnimator.SetBool("Ducking", true);
+        }
+
+        if(Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            playerAnimator.SetBool("Ducking", false);
         }
 
         //Allow one duck at a time
@@ -78,12 +87,15 @@ public class PlayerControl : MonoBehaviour {
             isDiving = true;
             isJumping = true;
             startJump = Time.realtimeSinceStartup;
+            playerAnimator.SetBool("Landed", false);
+            //playerAnimator.SetFloat("DiveHeight", body.velocity.y);
         }
 
         if(playerCollider.size.x == mScaleX && body.velocity.y == 0)
         {
             isJumping = false;
             isDiving = false;
+            playerAnimator.SetBool("Landed", true);
         }
 
         if (isDiving && body.velocity.y < 0 && (startJump + diveFloatTime) > Time.realtimeSinceStartup) {
