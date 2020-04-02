@@ -22,8 +22,12 @@ public class GameAssets : MonoBehaviour {
 	public Transform jumpObsBody;
 	public Transform duckObsBody;
 	public Transform diveObsBody;
-	
-	public void increaseScore() {
+    public Transform bgBody;
+    public Transform mgBody;
+    public Transform fgBody;
+    public Transform newGroundBody;
+
+    public void increaseScore() {
 		score++;
 		Debug.Log("Current score: " + score);
 	}
