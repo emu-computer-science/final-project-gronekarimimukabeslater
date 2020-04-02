@@ -62,7 +62,7 @@ public class Level : MonoBehaviour
         fg1Transform.position = new Vector3(2.6f, 0f, 30f);
         fg2Transform.position = new Vector3(23f, 0f, 30f);
         ngTransform.position = new Vector3(-0.24f, -5.72f, 3f);
-        ng2Transform.position = new Vector3(18f, -5.72f, 3f);
+        ng2Transform.position = new Vector3(20f, -5.72f, 3f);
     }
 
 	private void ObstacleMovement() {
@@ -117,21 +117,21 @@ public class Level : MonoBehaviour
         {
             bg2Transform.position = new Vector2(39f, 3.5f);
         }
-        if (fg1Transform.position.x < -17.8f)
+        if (fg1Transform.position.x < -19.8f)
         {
-            fg1Transform.position = new Vector3(23f, 0f, 30f);
+            fg1Transform.position = new Vector3(21f, 0f, 30f);
         }
-        if (fg2Transform.position.x < -17.8f)
+        if (fg2Transform.position.x < -19.8f)
         {
-            fg2Transform.position = new Vector3(23f, 0f, 30f);
+            fg2Transform.position = new Vector3(21f, 0f, 30f);
         }
-        if (ngTransform.position.x < -21f)
+        if (ngTransform.position.x < -19.5f)
         {
-            ngTransform.position = new Vector3(16f, -5.72f, 3f);
+            ngTransform.position = new Vector3(21f, -5.72f, 3f);
         }
-        if (ng2Transform.position.x < -21f)
+        if (ng2Transform.position.x < -19.5f)
         {
-            ng2Transform.position = new Vector3(16f, -5.72f, 3f);
+            ng2Transform.position = new Vector3(21f, -5.72f, 3f);
         }
 
     }
