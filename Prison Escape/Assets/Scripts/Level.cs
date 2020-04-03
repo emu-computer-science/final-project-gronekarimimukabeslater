@@ -92,6 +92,7 @@ public class Level : MonoBehaviour
 
     private void BackgroundMovement()
     {
+        //moves the sprites across the screen
         mg1Transform.position += new Vector3(-1, 0, 0) * MIDGROUND_SPEED * Time.deltaTime;
         mg2Transform.position += new Vector3(-1, 0, 0) * MIDGROUND_SPEED * Time.deltaTime;
         bg1Transform.position += new Vector3(-1, 0, 0) * BACKGROUND_SPEED * Time.deltaTime;
@@ -101,6 +102,8 @@ public class Level : MonoBehaviour
         ngTransform.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
         ng2Transform.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
 
+
+        //checks if sprites are off screen and resets their position if they are
         if (mg1Transform.position.x < -27f)
         {
             mg1Transform.position = new Vector2(32.8f, 3.8f);
