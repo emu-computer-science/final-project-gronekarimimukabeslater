@@ -40,11 +40,13 @@ public class PlayerControl : MonoBehaviour {
             body.velocity += Vector2.up * jumpVelocity;
             isJumping = true;
             isDiving = true; //Prevents the player from diving in mid air
+            playerAnimator.SetBool("Jump", true); //Plays jumping animation
         }
         
         // Only Allow 1 jump at a time (No Infinite Jumps)
         if (body.velocity.y == 0) {
             isJumping = false;
+            playerAnimator.SetBool("Jump", false);
         }
 
         // Improved Falling / Jumping
@@ -60,6 +62,7 @@ public class PlayerControl : MonoBehaviour {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y / 2);
             isDucking = true;
             playerAnimator.SetBool("Ducking", true);
+            playerAnimator.SetBool("Jump", false); //Stop jump animation if player ducks mid air
         }
 
         if(Input.GetKeyUp(KeyCode.DownArrow))
@@ -120,10 +123,7 @@ public class PlayerControl : MonoBehaviour {
             SceneManager.LoadScene("Main");
             GameAssets.GetInstance().resetScore();
         }
-       // else
-      //  {
          collider.gameObject.transform.position=new Vector2(-14F, collider.gameObject.transform.position.y);
-      //  }
 		
 	}
 }
