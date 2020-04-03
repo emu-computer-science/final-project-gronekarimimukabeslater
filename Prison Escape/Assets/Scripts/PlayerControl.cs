@@ -19,6 +19,7 @@ public class PlayerControl : MonoBehaviour {
 
     private float startJump;
     private Animator playerAnimator;
+    private int Alive;
 
     void Awake() {
         body = player.GetComponent<Rigidbody2D>();
@@ -112,7 +113,17 @@ public class PlayerControl : MonoBehaviour {
     }
 	
 	private void OnTriggerEnter2D(Collider2D collider) {
-		SceneManager.LoadScene("Main");
-		GameAssets.GetInstance().resetScore();
+
+        Alive= GameAssets.GetInstance().reducehealth();
+        if (Alive == 0)
+        {
+            SceneManager.LoadScene("Main");
+            GameAssets.GetInstance().resetScore();
+        }
+       // else
+      //  {
+         collider.gameObject.transform.position=new Vector2(-14F, collider.gameObject.transform.position.y);
+      //  }
+		
 	}
 }

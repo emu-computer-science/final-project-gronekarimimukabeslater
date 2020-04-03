@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // House assets
 // Obstacles, etc.
@@ -8,15 +9,24 @@ using UnityEngine;
 public class GameAssets : MonoBehaviour {
 	
 	private int score = 0;
+    public Text txt;
+    public Text health;
+
+    private int Alive=3;
+
     public static GameAssets instance;
 	
 	public static GameAssets GetInstance() {
 		return instance;
 	}
-	
+
 	public void Awake() {
 		instance = this;
 	}
+
+    public void Start() {
+        health.text = "Health: " + Alive;
+    }
 	
 	// Stores assets for obstacles that 
 	public Transform jumpObsBody;
@@ -30,10 +40,22 @@ public class GameAssets : MonoBehaviour {
     public void increaseScore() {
 		score++;
 		Debug.Log("Current score: " + score);
-	}
+        txt.text = "Current score: " + score;
+
+    }
 	
 	public void resetScore() {
 		score = 0;
+        
 		Debug.Log("Current score: " + score);
-	}
+        txt.text = "Current score: " + score;
+       
+    }
+    public int reducehealth()
+    {
+        Alive -= 1;
+        health.text = "Health: " + Alive;
+        return Alive;
+
+    }
 }
