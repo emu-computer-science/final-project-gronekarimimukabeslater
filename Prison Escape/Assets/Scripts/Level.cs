@@ -144,8 +144,8 @@ public class Level : MonoBehaviour
 		
 		int obstacleType  = Random.Range(1, 4);
 
-		// Obstacles to jump over
-		if (obstacleType == 1) {
+        // Obstacles to jump over
+        if (obstacleType == 1) {
 			Transform jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
 			jumpObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
 			obstacleList.Add(new Obstacle(jumpObstacle));
@@ -154,14 +154,14 @@ public class Level : MonoBehaviour
 		// Obstacles to dive through
 		if (obstacleType == 2) {
             Transform diveObstacle = Instantiate(GameAssets.GetInstance().diveObsBody);
-            diveObstacle.position = new Vector3(xPos, -2.5f); // Initial position for obstacle
+            diveObstacle.position = new Vector3(xPos, -2f); // Initial position for obstacle
             obstacleList.Add(new Obstacle(diveObstacle));
 		}
 		
 		// Obstacles to duck under
 		if (obstacleType == 3) {
 			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
-			duckObstacle.position = new Vector3(xPos, -2.8f); // Initial position for obstacle
+			duckObstacle.position = new Vector3(xPos, -2.45f); // Initial position for obstacle
 			obstacleList.Add(new Obstacle(duckObstacle));
 		}
 	}

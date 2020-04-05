@@ -35,8 +35,9 @@ public class PlayerControl : MonoBehaviour {
     }
 
     void Update() {
+
         // Basic Jumping Motion
-        if (Input.GetKeyDown(KeyCode.UpArrow) && !isJumping) {
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && !isJumping) {
             body.velocity += Vector2.up * jumpVelocity;
             isJumping = true;
             isDiving = true; //Prevents the player from diving in mid air
@@ -52,12 +53,12 @@ public class PlayerControl : MonoBehaviour {
         // Improved Falling / Jumping
         if (body.velocity.y < 0) { // Falling
             body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultipler - 1) * Time.deltaTime;
-        } else if (body.velocity.y > 0 && !Input.GetKey(KeyCode.UpArrow)) { // Long / Hold Jump
+        } else if (body.velocity.y > 0 && !(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))) { // Long / Hold Jump
             body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultipler - 1) * Time.deltaTime;
-        }
+        } 
 
         //Ducking
-        if(Input.GetKeyDown(KeyCode.DownArrow) && !isDucking)
+        if(Input.GetKeyDown(KeyCode.DownArrow) && !isDucking || Input.GetKeyDown(KeyCode.S) && !isDucking)
         {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y / 2);
             isDucking = true;
@@ -65,7 +66,7 @@ public class PlayerControl : MonoBehaviour {
             playerAnimator.SetBool("Jump", false); //Stop jump animation if player ducks mid air
         }
 
-        if(Input.GetKeyUp(KeyCode.DownArrow))
+        if(Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
         {
             playerAnimator.SetBool("Ducking", false);
         }
@@ -77,15 +78,15 @@ public class PlayerControl : MonoBehaviour {
         }
 
         //Get up from ducking
-        if(Input.GetKeyUp(KeyCode.DownArrow))
+        if(Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
         {
             playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y * 2);
         }
 
         //Diving
-        if(Input.GetKeyDown(KeyCode.RightArrow) && !isDiving)
+        if(Input.GetKeyDown(KeyCode.RightArrow) && !isDiving || Input.GetKeyDown(KeyCode.D) && !isDiving)
         {
-            body.velocity += Vector2.up * (jumpVelocity);
+            body.velocity += Vector2.up * (jumpVelocity - 2f);
             playerCollider.size = new Vector2(playerCollider.size.x * 2, playerCollider.size.y / 2);
             //body.transform.localScale =  new Vector2(body.transform.localScale.x * 2, body.transform.localScale.y /2); //This will be removed once we have player sprites
             isDiving = true;

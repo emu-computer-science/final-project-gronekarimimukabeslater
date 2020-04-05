@@ -3,6 +3,9 @@
 Play: https://www.wurmatron.io/Prison-Escape/
 
 # Controls
-Up Arrow: Jump
-Right Arrow: Dive
-Down Arrow: Duck
+
+Jump: `W` or `Up Arrow`
+
+Dive: `D` or `Right Arrow`
+
+Duck: `S` or `Down Arrow`

@@ -39,16 +39,16 @@ public class GameAssets : MonoBehaviour {
 
     public void increaseScore() {
 		score++;
-		Debug.Log("Current score: " + score);
-        txt.text = "Current score: " + score;
+		Debug.Log("Current Score: " + score);
+        txt.text = "Current Score: " + score;
 
     }
 	
 	public void resetScore() {
 		score = 0;
         
-		Debug.Log("Current score: " + score);
-        txt.text = "Current score: " + score;
+		Debug.Log("Current Score: " + score);
+        txt.text = "Current Score: " + score;
        
     }
     public int reducehealth()
