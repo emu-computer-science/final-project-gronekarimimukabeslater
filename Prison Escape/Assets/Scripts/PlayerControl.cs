@@ -124,7 +124,7 @@ public class PlayerControl : MonoBehaviour {
             SceneManager.LoadScene("Main");
             GameAssets.GetInstance().resetScore();
         }
-         collider.gameObject.transform.position=new Vector2(-14F, collider.gameObject.transform.position.y);
+         collider.gameObject.transform.position=new Vector2(collider.gameObject.transform.position.x, -100f);
 		
 	}
 }
