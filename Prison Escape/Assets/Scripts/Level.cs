@@ -166,8 +166,9 @@ public class Level : MonoBehaviour
 		// Obstacles to duck under
 		if (obstacleType == 3) {
 			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
-			duckObstacle.position = new Vector3(xPos, -2.45f); // Initial position for obstacle
-			obstacleList.Add(new Obstacle(duckObstacle));
+			//duckObstacle.position = new Vector3(xPos, -2.0f); // Initial position for obstacle
+            duckObstacle.position = new Vector3(xPos, -2.66f); // Initial position for obstacle
+            obstacleList.Add(new Obstacle(duckObstacle));
 		}
 	}
 	
