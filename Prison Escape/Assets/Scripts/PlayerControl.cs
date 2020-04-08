@@ -1,138 +1,150 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour {
-
-    public GameObject player;
+    
+    // Player Config
     public float jumpVelocity = 8f;
-    public float fallMultipler = 2.5f;
+    public float fallMultiplier = 2.5f;
     public float diveFloatTime = .5f;
-
+    public float fallBackHealth = -3f;
+    public int maxHealth = 3;
+    // Collision / Body
     private Rigidbody2D body;
-    private bool isJumping;
-    private bool isDucking;
-    private bool isDiving;
-    private BoxCollider2D playerBoxCollider;
-    private CircleCollider2D playerCircleCollider;
-    float mScaleX, mScaleY;
-    const float BOX_COLLIDER_X = 1.37f;
-    const float BOX_COLLIDER_Y = 2.34f;
-
-    private float startJump;
-    private Animator playerAnimator;
-    private int Alive;
-
-    void Awake() {
-        body = player.GetComponent<Rigidbody2D>();
-    }
-
-    private void Start()
-    {
-        playerBoxCollider = GetComponent<BoxCollider2D>();
-        playerCircleCollider = GetComponent<CircleCollider2D>();
-        playerBoxCollider.size = new Vector2(BOX_COLLIDER_X, BOX_COLLIDER_Y);
-
-        playerAnimator = GetComponent<Animator>();
+    private BoxCollider2D boxCollider;
+    private CircleCollider2D circleCollider;
+    // Player Status
+    private bool isJumping = false;
+    private bool isDucking = false;
+    private bool isDiving = false;
+    private int health;
+    private int healthLocation = -1;
+    private float startDive;
+    // Animation
+    private Animator animator;
+    
+    private void Start() {
+        body = GetComponent<Rigidbody2D> ();
+        boxCollider = GetComponent<BoxCollider2D>();
+        circleCollider = GetComponent<CircleCollider2D>();
+        animator = GetComponent<Animator>();
+        animator.SetBool("Jump", false);
+        animator.SetBool("Ducking", false);
+        animator.SetBool("Landed", true);
+        health = maxHealth;
     }
 
     void Update() {
-
-        // Basic Jumping Motion
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && !isJumping) {
-            body.velocity += Vector2.up * jumpVelocity;
-            isJumping = true;
-            isDiving = true; //Prevents the player from diving in mid air
-            playerAnimator.SetBool("Jump", true); //Plays jumping animation
+        // Keys
+        bool jumpKey = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
+        bool duckKey = Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S);
+        bool diveKey = Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown((KeyCode.D));
+        // Jump Logic
+        if (jumpKey && !isJumping && !isDiving) {
+            handleJump();
         }
-        
-        // Only Allow 1 jump at a time (No Infinite Jumps)
-        if (body.velocity.y == 0) {
-            isJumping = false;
-            playerAnimator.SetBool("Jump", false);
-        }
-
-        // Improved Falling / Jumping
+        // Improved Jump
         if (body.velocity.y < 0) { // Falling
-            body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultipler - 1) * Time.deltaTime;
-        } else if (body.velocity.y > 0 && !(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))) { // Long / Hold Jump
-            body.velocity += Vector2.up * Physics2D.gravity.y * (fallMultipler - 1) * Time.deltaTime;
-        } 
-
-        //Ducking
-        if(Input.GetKeyDown(KeyCode.DownArrow) && !isDucking || Input.GetKeyDown(KeyCode.S) && !isDucking)
-        {
-            if( playerBoxCollider.size.y == BOX_COLLIDER_Y)
-            {
-                playerBoxCollider.size = new Vector2(playerBoxCollider.size.x, playerBoxCollider.size.y / 4);
-            }
-            
-            isDucking = true;
-            playerAnimator.SetBool("Ducking", true);
-            playerAnimator.SetBool("Jump", false); //Stop jump animation if player ducks mid air
+            body.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
+        } else if (body.velocity.y > 0 && !(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))) { // Long Jump
+            body.velocity += Vector2.up * (Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime);
         }
-
-        if(Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
-        {
-            playerAnimator.SetBool("Ducking", false);
+        // Dive Logic
+        if (diveKey && !isDiving && !isDucking && !isJumping) {
+            handleDive();
         }
-
-        //Allow one duck at a time
-        if(playerBoxCollider.size.y == BOX_COLLIDER_Y)
-        {
-            isDucking = false;
-        }
-
-        //Get up from ducking
-        if(Input.GetKeyUp(KeyCode.DownArrow) && playerBoxCollider.size.y != BOX_COLLIDER_Y || Input.GetKeyUp(KeyCode.S) && playerBoxCollider.size.y != mScaleY)
-        {
-            playerBoxCollider.size = new Vector2(playerBoxCollider.size.x, playerBoxCollider.size.y * 4);
-        }
-
-        //Diving
-        if(Input.GetKeyDown(KeyCode.RightArrow) && !isDiving || Input.GetKeyDown(KeyCode.D) && !isDiving)
-        {
-            body.velocity += Vector2.up * (jumpVelocity - 2f);
-            playerBoxCollider.size = new Vector2(playerBoxCollider.size.x * 2, playerBoxCollider.size.y / 2);
-            //playerCircleCollider.enabled = false;
-            playerCircleCollider.offset = new Vector2(playerCircleCollider.offset.x, playerCircleCollider.offset.y + 1.25f);
-            isDiving = true;
-            isJumping = true;
-            startJump = Time.realtimeSinceStartup;
-            playerAnimator.SetBool("Landed", false);
-        }
-
-        if(playerBoxCollider.size.x == BOX_COLLIDER_X && body.velocity.y == 0)
-        {
-            isJumping = false;
-            isDiving = false;
-            playerAnimator.SetBool("Landed", true);
-        }
-
-        if (isDiving && body.velocity.y < 0 && (startJump + diveFloatTime) > Time.realtimeSinceStartup) {
+        if (isDiving && body.velocity.y < 0 && (startDive + diveFloatTime) > Time.realtimeSinceStartup) {
             body.velocity = new Vector2(0,.2f);
         }
-
-        if(isDiving == true && body.velocity.y == 0)
-        {
-            playerBoxCollider.size = new Vector2(playerBoxCollider.size.x / 2, playerBoxCollider.size.y * 2);
-            //playerCircleCollider.enabled = true;
-            playerCircleCollider.offset = new Vector2(playerCircleCollider.offset.x, playerCircleCollider.offset.y - 1.25f);
+        // Duck Logic
+        if (duckKey && !isDucking && !isDiving) {
+            handleDuck();
+        }
+        // Finish Ducking
+        if (Input.GetKeyUp(KeyCode.DownArrow) && isDucking || Input.GetKeyUp(KeyCode.S) && isDucking) {
+            boxCollider.size = new Vector2(boxCollider.size.x,boxCollider.size.y * 4);
+            animator.SetBool("Ducking", false);
             isDucking = false;
-        }
-
+        } 
+        updatePlayerLocationBasedOnHealth(false);
     }
-	
-	private void OnTriggerEnter2D(Collider2D collider) {
 
-        Alive= GameAssets.GetInstance().reducehealth();
-        if (Alive == 0)
-        {
-            SceneManager.LoadScene("Main");
-            GameAssets.GetInstance().resetScore();
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.collider.name.Equals("Ground")) {
+            // Update Animations
+            animator.SetBool("Landed", true);
+            animator.SetBool("Jump", false);
+            // After Diving
+            if (isDiving) {
+                updatePlayerLocationBasedOnHealth(true); // Resets player position
+                // Reset Colliders
+                var size = boxCollider.size;
+                boxCollider.size = new Vector2(size.x / 2, size.y * 2);
+                var offset = circleCollider.offset;
+                circleCollider.offset = new Vector2(offset.x, offset.y - 1.25f);
+            }
+            // Update Player Status
+            isJumping = false;
+            isDiving = false;
         }
-         collider.gameObject.transform.position=new Vector2(collider.gameObject.transform.position.x, -100f);
-		
-	}
+        // The Collision is an "Enemy"
+        if (other.gameObject.CompareTag("Enemy")) {
+            health = GameAssets.GetInstance().reducehealth();
+            other.gameObject.transform.position=new Vector2(other.gameObject.transform.position.x, -100f);
+            if (health <= 0) {
+                SceneManager.LoadScene("Main");
+                GameAssets.GetInstance().resetScore();
+            } else {
+                updatePlayerLocationBasedOnHealth(true);
+                isDiving = false;
+                isJumping = false;
+                isDucking = false;
+                animator.SetBool("Jump", false);
+                animator.SetBool("Ducking", false);
+                animator.SetBool("Landed", true);
+            }
+        }
+    }
+
+    void handleJump() {
+        body.velocity += Vector2.up * jumpVelocity;
+        isJumping = true;
+        if (!isDucking) { // Keep Animation from switching (rapidly)
+            animator.SetBool("Jump", true);
+            animator.SetBool("Ducking", false);
+        }
+    }
+
+    void handleDive() {
+        body.velocity += Vector2.up * (jumpVelocity - 2f);
+        // Rearrange colliders
+        var size = boxCollider.size;
+        boxCollider.size = new Vector2(size.x * 2, size.y / 2);
+        var offset = circleCollider.offset;
+        circleCollider.offset = new Vector2(offset.x, offset.y + 1.25f);
+        isDiving = true;
+        startDive = Time.realtimeSinceStartup;
+        animator.SetBool("Landed", false);
+    }
+
+    void handleDuck() {
+        isDucking = true;
+        boxCollider.size = new Vector2(boxCollider.size.x,boxCollider.size.y / 4);
+        animator.SetBool("Ducking", true);
+        if (isJumping) { // Keep Animation from switching (rapidly)
+            animator.SetBool("Jump", false);
+        }
+    }
+
+    void updatePlayerLocationBasedOnHealth(bool forceDefaultYPos) {
+        float xPos = healthLocation + ((maxHealth - health) * fallBackHealth);
+        float yPos = body.position.y;
+        if (forceDefaultYPos) {
+            yPos = -3.63f;
+        }
+        body.position = new Vector2(xPos,yPos);
+    }
 }
