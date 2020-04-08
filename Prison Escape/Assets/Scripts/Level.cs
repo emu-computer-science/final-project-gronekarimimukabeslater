@@ -72,6 +72,12 @@ public class Level : MonoBehaviour
 	
 			// Destory obstacles if player dodges them and they move too far to the left
 			if (obstacle.getXPos() < OBSTACLE_DESTROY_POSITION) {
+                if(obstacle.getYPos() > OBSTACLE_DESTROY_POSITION) //this is in case the player collided with the player, we do not want to increase the score
+                {
+                    // Temp score track and printer
+                    GameAssets.GetInstance().increaseScore();
+                }
+
 				// Destroy Obstacle
 				obstacle.selfDestruct();
 				Debug.Log("Obstacle Destroyed");
@@ -84,8 +90,7 @@ public class Level : MonoBehaviour
 				// if obstacle is destroyed, spawn a new one
 				spawnObstacle(ENEMY_START_POSITION);
 				
-				// Temp score track and printer
-				GameAssets.GetInstance().increaseScore();
+				
 			}
 		}
 	}
@@ -161,8 +166,9 @@ public class Level : MonoBehaviour
 		// Obstacles to duck under
 		if (obstacleType == 3) {
 			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
-			duckObstacle.position = new Vector3(xPos, -2.45f); // Initial position for obstacle
-			obstacleList.Add(new Obstacle(duckObstacle));
+			//duckObstacle.position = new Vector3(xPos, -2.0f); // Initial position for obstacle
+            duckObstacle.position = new Vector3(xPos, -2.66f); // Initial position for obstacle
+            obstacleList.Add(new Obstacle(duckObstacle));
 		}
 	}
 	
@@ -182,8 +188,14 @@ public class Level : MonoBehaviour
 		public float getXPos() {
 			return obstacle.position.x;
 		}
-		
-		public void selfDestruct() {
+
+        public float getYPos()
+        {
+            return obstacle.position.y;
+        }
+
+
+        public void selfDestruct() {
 			Destroy(obstacle.gameObject);
 		}
 	}

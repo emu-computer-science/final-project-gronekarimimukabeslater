@@ -14,8 +14,11 @@ public class PlayerControl : MonoBehaviour {
     private bool isJumping;
     private bool isDucking;
     private bool isDiving;
-    private BoxCollider2D playerCollider;
+    private BoxCollider2D playerBoxCollider;
+    private CircleCollider2D playerCircleCollider;
     float mScaleX, mScaleY;
+    const float BOX_COLLIDER_X = 1.37f;
+    const float BOX_COLLIDER_Y = 2.34f;
 
     private float startJump;
     private Animator playerAnimator;
@@ -27,9 +30,9 @@ public class PlayerControl : MonoBehaviour {
 
     private void Start()
     {
-        playerCollider = GetComponent<BoxCollider2D>();
-        mScaleY = playerCollider.size.y;
-        mScaleX = playerCollider.size.x;
+        playerBoxCollider = GetComponent<BoxCollider2D>();
+        playerCircleCollider = GetComponent<CircleCollider2D>();
+        playerBoxCollider.size = new Vector2(BOX_COLLIDER_X, BOX_COLLIDER_Y);
 
         playerAnimator = GetComponent<Animator>();
     }
@@ -60,7 +63,11 @@ public class PlayerControl : MonoBehaviour {
         //Ducking
         if(Input.GetKeyDown(KeyCode.DownArrow) && !isDucking || Input.GetKeyDown(KeyCode.S) && !isDucking)
         {
-            playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y / 2);
+            if( playerBoxCollider.size.y == BOX_COLLIDER_Y)
+            {
+                playerBoxCollider.size = new Vector2(playerBoxCollider.size.x, playerBoxCollider.size.y / 4);
+            }
+            
             isDucking = true;
             playerAnimator.SetBool("Ducking", true);
             playerAnimator.SetBool("Jump", false); //Stop jump animation if player ducks mid air
@@ -72,31 +79,31 @@ public class PlayerControl : MonoBehaviour {
         }
 
         //Allow one duck at a time
-        if(playerCollider.size.y == mScaleY)
+        if(playerBoxCollider.size.y == BOX_COLLIDER_Y)
         {
             isDucking = false;
         }
 
         //Get up from ducking
-        if(Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
+        if(Input.GetKeyUp(KeyCode.DownArrow) && playerBoxCollider.size.y != BOX_COLLIDER_Y || Input.GetKeyUp(KeyCode.S) && playerBoxCollider.size.y != mScaleY)
         {
-            playerCollider.size = new Vector2(playerCollider.size.x, playerCollider.size.y * 2);
+            playerBoxCollider.size = new Vector2(playerBoxCollider.size.x, playerBoxCollider.size.y * 4);
         }
 
         //Diving
         if(Input.GetKeyDown(KeyCode.RightArrow) && !isDiving || Input.GetKeyDown(KeyCode.D) && !isDiving)
         {
             body.velocity += Vector2.up * (jumpVelocity - 2f);
-            playerCollider.size = new Vector2(playerCollider.size.x * 2, playerCollider.size.y / 2);
-            //body.transform.localScale =  new Vector2(body.transform.localScale.x * 2, body.transform.localScale.y /2); //This will be removed once we have player sprites
+            playerBoxCollider.size = new Vector2(playerBoxCollider.size.x * 2, playerBoxCollider.size.y / 2);
+            //playerCircleCollider.enabled = false;
+            playerCircleCollider.offset = new Vector2(playerCircleCollider.offset.x, playerCircleCollider.offset.y + 1.25f);
             isDiving = true;
             isJumping = true;
             startJump = Time.realtimeSinceStartup;
             playerAnimator.SetBool("Landed", false);
-            //playerAnimator.SetFloat("DiveHeight", body.velocity.y);
         }
 
-        if(playerCollider.size.x == mScaleX && body.velocity.y == 0)
+        if(playerBoxCollider.size.x == BOX_COLLIDER_X && body.velocity.y == 0)
         {
             isJumping = false;
             isDiving = false;
@@ -109,8 +116,9 @@ public class PlayerControl : MonoBehaviour {
 
         if(isDiving == true && body.velocity.y == 0)
         {
-            playerCollider.size = new Vector2(playerCollider.size.x / 2, playerCollider.size.y * 2);
-            //body.transform.localScale = new Vector2(body.transform.localScale.x / 2, body.transform.localScale.y * 2); //This will be removed once we have player sprites
+            playerBoxCollider.size = new Vector2(playerBoxCollider.size.x / 2, playerBoxCollider.size.y * 2);
+            //playerCircleCollider.enabled = true;
+            playerCircleCollider.offset = new Vector2(playerCircleCollider.offset.x, playerCircleCollider.offset.y - 1.25f);
             isDucking = false;
         }
 
@@ -124,7 +132,7 @@ public class PlayerControl : MonoBehaviour {
             SceneManager.LoadScene("Main");
             GameAssets.GetInstance().resetScore();
         }
-         collider.gameObject.transform.position=new Vector2(-14F, collider.gameObject.transform.position.y);
+         collider.gameObject.transform.position=new Vector2(collider.gameObject.transform.position.x, -100f);
 		
 	}
 }
