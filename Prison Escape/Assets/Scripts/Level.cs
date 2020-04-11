@@ -7,7 +7,11 @@ public class Level : MonoBehaviour
 
 	private const float OBSTACLE_SPEED = 5f; // Sets speed of obstacles moving towards player
 	private const float OBSTACLE_DESTROY_POSITION = -15f; // x Position past player where Obstacles get destroyed and score increases
+<<<<<<< HEAD
 	private const float ENEMY_START_POSITION = 10f;
+=======
+	private const float ENEMY_START_POSITION = 14f;
+>>>>>>> 4f271f63f525aed3eb8a610f2470658672c5c3ba
 	private const int JUMP_OBSTACLE = 1;
 	private const int DIVE_OBSTACLE = 2;
 	private const int DUCK_OBSTACLE = 3;
@@ -157,7 +161,7 @@ public class Level : MonoBehaviour
 		// Obstacles to dive through
 		if (obstacleType == 2) {
             Transform diveObstacle = Instantiate(GameAssets.GetInstance().diveObsBody);
-            diveObstacle.position = new Vector3(xPos, -2f); // Initial position for obstacle
+            diveObstacle.position = new Vector3(xPos, -1.7f); // Initial position for obstacle
             obstacleList.Add(new Obstacle(diveObstacle));
 		}
 		
@@ -165,7 +169,7 @@ public class Level : MonoBehaviour
 		if (obstacleType == 3) {
 			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
 			//duckObstacle.position = new Vector3(xPos, -2.0f); // Initial position for obstacle
-            duckObstacle.position = new Vector3(xPos, -2.66f); // Initial position for obstacle
+            duckObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
             obstacleList.Add(new Obstacle(duckObstacle));
 		}
 	}
