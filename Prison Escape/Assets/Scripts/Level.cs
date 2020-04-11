@@ -72,6 +72,12 @@ public class Level : MonoBehaviour
 	
 			// Destory obstacles if player dodges them and they move too far to the left
 			if (obstacle.getXPos() < OBSTACLE_DESTROY_POSITION) {
+                if(obstacle.getYPos() > OBSTACLE_DESTROY_POSITION) //this is in case the player collided with the player, we do not want to increase the score
+                {
+                    // Temp score track and printer
+                    GameAssets.GetInstance().increaseScore();
+                }
+
 				// Destroy Obstacle
 				obstacle.selfDestruct();
 				Debug.Log("Obstacle Destroyed");
@@ -84,14 +90,14 @@ public class Level : MonoBehaviour
 				// if obstacle is destroyed, spawn a new one
 				spawnObstacle(ENEMY_START_POSITION);
 				
-				// Temp score track and printer
-				GameAssets.GetInstance().increaseScore();
+				
 			}
 		}
 	}
 
     private void BackgroundMovement()
     {
+        //moves the sprites across the screen
         mg1Transform.position += new Vector3(-1, 0, 0) * MIDGROUND_SPEED * Time.deltaTime;
         mg2Transform.position += new Vector3(-1, 0, 0) * MIDGROUND_SPEED * Time.deltaTime;
         bg1Transform.position += new Vector3(-1, 0, 0) * BACKGROUND_SPEED * Time.deltaTime;
@@ -101,6 +107,8 @@ public class Level : MonoBehaviour
         ngTransform.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
         ng2Transform.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
 
+
+        //checks if sprites are off screen and resets their position if they are
         if (mg1Transform.position.x < -27f)
         {
             mg1Transform.position = new Vector2(32.8f, 3.8f);
@@ -141,8 +149,8 @@ public class Level : MonoBehaviour
 		
 		int obstacleType  = Random.Range(1, 4);
 
-		// Obstacles to jump over
-		if (obstacleType == 1) {
+        // Obstacles to jump over
+        if (obstacleType == 1) {
 			Transform jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
 			jumpObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
 			obstacleList.Add(new Obstacle(jumpObstacle));
@@ -151,15 +159,16 @@ public class Level : MonoBehaviour
 		// Obstacles to dive through
 		if (obstacleType == 2) {
             Transform diveObstacle = Instantiate(GameAssets.GetInstance().diveObsBody);
-            diveObstacle.position = new Vector3(xPos, -2.5f); // Initial position for obstacle
+            diveObstacle.position = new Vector3(xPos, -2f); // Initial position for obstacle
             obstacleList.Add(new Obstacle(diveObstacle));
 		}
 		
 		// Obstacles to duck under
 		if (obstacleType == 3) {
 			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
-			duckObstacle.position = new Vector3(xPos, -2.8f); // Initial position for obstacle
-			obstacleList.Add(new Obstacle(duckObstacle));
+			//duckObstacle.position = new Vector3(xPos, -2.0f); // Initial position for obstacle
+            duckObstacle.position = new Vector3(xPos, -2.66f); // Initial position for obstacle
+            obstacleList.Add(new Obstacle(duckObstacle));
 		}
 	}
 	
@@ -179,8 +188,14 @@ public class Level : MonoBehaviour
 		public float getXPos() {
 			return obstacle.position.x;
 		}
-		
-		public void selfDestruct() {
+
+        public float getYPos()
+        {
+            return obstacle.position.y;
+        }
+
+
+        public void selfDestruct() {
 			Destroy(obstacle.gameObject);
 		}
 	}

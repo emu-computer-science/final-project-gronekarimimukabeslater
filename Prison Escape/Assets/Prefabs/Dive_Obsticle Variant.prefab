@@ -17,14 +17,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 2.56, y: 5.12}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.4}
+  m_Size: {x: 2.2, y: 3.05}
   m_EdgeRadius: 0
 --- !u!1001 &4089313528947098164
 PrefabInstance:
@@ -37,6 +37,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dive_Obsticle Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1944635117673161257, guid: 604222dfd177d1b4eae9ac85416c3d22,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 1944635117673161258, guid: 604222dfd177d1b4eae9ac85416c3d22,
         type: 3}
@@ -56,7 +61,17 @@ PrefabInstance:
     - target: {fileID: 1944635117673161258, guid: 604222dfd177d1b4eae9ac85416c3d22,
         type: 3}
       propertyPath: m_Offset.y
-      value: -1.05
+      value: -2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1944635117673161258, guid: 604222dfd177d1b4eae9ac85416c3d22,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1944635117673161258, guid: 604222dfd177d1b4eae9ac85416c3d22,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1944635117673161259, guid: 604222dfd177d1b4eae9ac85416c3d22,
         type: 3}
@@ -138,6 +153,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1944635117673161428, guid: 604222dfd177d1b4eae9ac85416c3d22,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 604222dfd177d1b4eae9ac85416c3d22, type: 3}
