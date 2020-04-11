@@ -87,14 +87,17 @@ public class Level : MonoBehaviour
 	private void ObstacleMovement() {
 		for (int i = 0; i < obstacleList.Count; i++) {
 			Obstacle obstacle = obstacleList[i];
+			bool toRightOfPlayer = obstacle.getXPos() > PlayerControl.GetInstance().GetPlayerPos();
 			obstacle.move();
+	
+			if (toRightOfPlayer && obstacle.getXPos() <= PlayerControl.GetInstance().GetPlayerPos()) {
+                // Score track and printer
+                GameAssets.GetInstance().increaseScore();
+            }
 	
 			// Destory obstacles if player dodges them and they move too far to the left
 			if (obstacle.getXPos() < OBSTACLE_DESTROY_POSITION) {
-                if(obstacle.getYPos() > OBSTACLE_DESTROY_POSITION) { //this is in case the player collided with the player, we do not want to increase the score
-                    // Temp score track and printer
-                    GameAssets.GetInstance().increaseScore();
-                }
+
 
 				// Destroy Obstacle
 				obstacle.selfDestruct();
