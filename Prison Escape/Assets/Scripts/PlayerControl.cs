@@ -25,6 +25,16 @@ public class PlayerControl : MonoBehaviour {
     private float startDive;
     // Animation
     private Animator animator;
+	
+	private static PlayerControl instance;
+	
+	public static PlayerControl GetInstance() {
+		return instance;
+	}
+	
+	private void Awake() {
+		instance = this;
+	}
     
     private void Start() {
         body = GetComponent<Rigidbody2D> ();
@@ -147,4 +157,8 @@ public class PlayerControl : MonoBehaviour {
         }
         body.position = new Vector2(xPos,yPos);
     }
+	
+	public float GetPlayerPos() {
+		return body.position.x;
+	}
 }
