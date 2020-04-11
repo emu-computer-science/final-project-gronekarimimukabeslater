@@ -44,6 +44,10 @@ public class GameAssets : MonoBehaviour {
 
     }
 	
+	public int getScore() {
+		return score;
+	}
+	
 	public void resetScore() {
 		score = 0;
         

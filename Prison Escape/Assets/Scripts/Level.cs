@@ -7,7 +7,7 @@ public class Level : MonoBehaviour
 
 	private const float OBSTACLE_SPEED = 5f; // Sets speed of obstacles moving towards player
 	private const float OBSTACLE_DESTROY_POSITION = -15f; // x Position past player where Obstacles get destroyed and score increases
-	private const float ENEMY_START_POSITION = 8f;
+	private const float ENEMY_START_POSITION = 10f;
 	private const int JUMP_OBSTACLE = 1;
 	private const int DIVE_OBSTACLE = 2;
 	private const int DUCK_OBSTACLE = 3;
@@ -26,21 +26,40 @@ public class Level : MonoBehaviour
     private Transform ng2Transform;
 
     private List<Obstacle> obstacleList;
+	private float spawnTimer;
+	private float spawnTimerMax;
+	
+	public enum Difficulty {
+		Easy,
+		Easier,
+		Medium,
+		Hard,
+		Hardest,
+	}
 	
 	private void Awake() {
 		obstacleList = new List<Obstacle>();
+		//spawnTimerMax = 1f;
+		SetDifficulty(Difficulty.Easy);
 	}
 	
 	private void Start() {
-		spawnObstacle(ENEMY_START_POSITION);
         CreateBackground();
-
-
     }
 
 	private void Update() {
 		ObstacleMovement();
         BackgroundMovement();
+		Spawner();
+	}
+	
+	private void Spawner() {
+		spawnTimer -= Time.deltaTime;
+		if (spawnTimer < 0) {
+			//if true, spawn a new obstacle
+			spawnTimer += spawnTimerMax;
+			spawnObstacle(ENEMY_START_POSITION);
+		}
 	}
 
     private void CreateBackground()
@@ -72,8 +91,7 @@ public class Level : MonoBehaviour
 	
 			// Destory obstacles if player dodges them and they move too far to the left
 			if (obstacle.getXPos() < OBSTACLE_DESTROY_POSITION) {
-                if(obstacle.getYPos() > OBSTACLE_DESTROY_POSITION) //this is in case the player collided with the player, we do not want to increase the score
-                {
+                if(obstacle.getYPos() > OBSTACLE_DESTROY_POSITION) { //this is in case the player collided with the player, we do not want to increase the score
                     // Temp score track and printer
                     GameAssets.GetInstance().increaseScore();
                 }
@@ -86,10 +104,6 @@ public class Level : MonoBehaviour
 				// any obstacles in the list above when one gets destroyed
 				obstacleList.Remove(obstacle);
 				i--;
-
-				// if obstacle is destroyed, spawn a new one
-				spawnObstacle(ENEMY_START_POSITION);
-				
 				
 			}
 		}
@@ -107,47 +121,31 @@ public class Level : MonoBehaviour
         ngTransform.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
         ng2Transform.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
 
-
         //checks if sprites are off screen and resets their position if they are
         if (mg1Transform.position.x < -27f)
-        {
             mg1Transform.position = new Vector2(32.8f, 3.8f);
-        }
         if (mg2Transform.position.x < -27f)
-        {
             mg2Transform.position = new Vector2(32.8f, 3.8f);
-        }
         if (bg1Transform.position.x < -27f)
-        {
             bg1Transform.position = new Vector2(39f, 3.5f);
-        }
         if (bg2Transform.position.x < -27f)
-        {
             bg2Transform.position = new Vector2(39f, 3.5f);
-        }
         if (fg1Transform.position.x < -19.8f)
-        {
             fg1Transform.position = new Vector3(21f, 0f, 30f);
-        }
         if (fg2Transform.position.x < -19.8f)
-        {
             fg2Transform.position = new Vector3(21f, 0f, 30f);
-        }
         if (ngTransform.position.x < -19.5f)
-        {
             ngTransform.position = new Vector3(21f, -5.72f, 3f);
-        }
         if (ng2Transform.position.x < -19.5f)
-        {
             ng2Transform.position = new Vector3(21f, -5.72f, 3f);
-        }
-
     }
 
     // This method spawns an obstacle
     private void spawnObstacle(float xPos) {
 		
+		SetDifficulty(GetDifficulty());
 		int obstacleType  = Random.Range(1, 4);
+		Debug.Log("Current Difficulty: " + GetDifficulty());
 
         // Obstacles to jump over
         if (obstacleType == 1) {
@@ -189,15 +187,52 @@ public class Level : MonoBehaviour
 			return obstacle.position.x;
 		}
 
-        public float getYPos()
-        {
+        public float getYPos(){
             return obstacle.position.y;
         }
-
 
         public void selfDestruct() {
 			Destroy(obstacle.gameObject);
 		}
+	}
+	
+	// Speed between obstacle respawns
+	private void SetDifficulty(Difficulty diff) {
+		switch(diff){
+		case(Difficulty.Easy):
+			spawnTimerMax = 2.4f;
+			break;
+		case(Difficulty.Easier):
+			spawnTimerMax = 2.1f;
+			break;
+		case(Difficulty.Medium):
+			spawnTimerMax = 1.8f;
+			break;
+		case(Difficulty.Hard):
+			spawnTimerMax = 1.5f;
+			break;
+		case(Difficulty.Hardest):
+			spawnTimerMax = 1.2f;
+			break;
+		}
+	}
+	
+	// Score required to increase difficulty
+	private Difficulty GetDifficulty() {
+		Debug.Log("GameAssets.GetInstance().getScore() = " + GameAssets.GetInstance().getScore());
+		
+		if (GameAssets.GetInstance().getScore() >= 35)
+			return Difficulty.Hardest;
+		if (GameAssets.GetInstance().getScore() >= 25)
+			return Difficulty.Hard;
+		if (GameAssets.GetInstance().getScore() >= 15)
+			return Difficulty.Medium;
+		if (GameAssets.GetInstance().getScore() >= 5)
+			return Difficulty.Easier;
+		return Difficulty.Easy;
+
+		
+			
 	}
 	
 		
