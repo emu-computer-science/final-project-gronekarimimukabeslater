@@ -80,11 +80,6 @@ public class PlayerControl : MonoBehaviour {
             // After Diving
             if (isDiving) {
                 updatePlayerLocationBasedOnHealth(true); // Resets player position
-                // Reset Colliders
-                var size = boxCollider.size;
-                boxCollider.size = new Vector2(size.x / 2, size.y * 2);
-                var offset = circleCollider.offset;
-                circleCollider.offset = new Vector2(offset.x, offset.y - 1.25f);
             }
             // Update Player Status
             isJumping = false;
@@ -144,6 +139,12 @@ public class PlayerControl : MonoBehaviour {
         float yPos = body.position.y;
         if (forceDefaultYPos) {
             yPos = -3.63f;
+            if (isDiving) {
+                var size = boxCollider.size;
+                boxCollider.size = new Vector2(size.x / 2, size.y * 2);
+                var offset = circleCollider.offset;
+                circleCollider.offset = new Vector2(offset.x, offset.y - 1.25f);
+            }
         }
         body.position = new Vector2(xPos,yPos);
     }
