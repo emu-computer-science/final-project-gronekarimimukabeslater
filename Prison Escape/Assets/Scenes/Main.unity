@@ -570,9 +570,9 @@ MonoBehaviour:
   health: {fileID: 1668226293}
   jumpObsBody: {fileID: 564596124600435071, guid: 63b361d893dec864f9254f8d773f23ea,
     type: 3}
-  duckObsBody: {fileID: 3594850946892240890, guid: 31a937a9a916fdf4f8f8959a0254a84c,
+  duckObsBody: {fileID: 5393311185835574829, guid: bc732e8d964b04c4e8961f1db454026c,
     type: 3}
-  diveObsBody: {fileID: 2467009058855444704, guid: ba3907d29c37d2c48b6e28b78aa0e585,
+  diveObsBody: {fileID: 1666315657522537770, guid: e3ae8c33e16539548b4a1e2eb10aab06,
     type: 3}
   bgBody: {fileID: 7952227911338049942, guid: 26bf6c0128f28fd468de529c3aa9d681, type: 3}
   mgBody: {fileID: 4256900080189601599, guid: bd5f3bb912b0bac4cb298972faa18585, type: 3}
