@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level : MonoBehaviour
-{
+public class Level : MonoBehaviour {
 
 	private const float OBSTACLE_SPEED = 5f; // Sets speed of obstacles moving towards player
 	private const float OBSTACLE_DESTROY_POSITION = -15f; // x Position past player where Obstacles get destroyed and score increases
@@ -28,6 +27,7 @@ public class Level : MonoBehaviour
     private List<Obstacle> obstacleList;
 	private float spawnTimer;
 	private float spawnTimerMax;
+	private State state;
 	
 	public enum Difficulty {
 		Easy,
@@ -37,20 +37,34 @@ public class Level : MonoBehaviour
 		Hardest,
 	}
 	
+	private enum State {
+		Playing,
+		Dead,
+	}
+	
 	private void Awake() {
 		obstacleList = new List<Obstacle>();
 		//spawnTimerMax = 1f;
 		SetDifficulty(Difficulty.Easy);
+		state = State.Playing;
 	}
 	
 	private void Start() {
         CreateBackground();
+		PlayerControl.GetInstance().OnDeath += PlayerControl_OnDeath;
     }
+	
+	private void PlayerControl_OnDeath(object sender, System.EventArgs e) {
+		Debug.Log("Death!");
+		state = State.Dead;
+	}
 
 	private void Update() {
-		ObstacleMovement();
-        BackgroundMovement();
-		Spawner();
+		if (state == State.Playing) {
+			ObstacleMovement();
+			BackgroundMovement();
+			Spawner();
+		}
 	}
 	
 	private void Spawner() {
@@ -62,8 +76,7 @@ public class Level : MonoBehaviour
 		}
 	}
 
-    private void CreateBackground()
-    {
+    private void CreateBackground() {
         //Creates the background objects and positions them on the scene
         mg2Transform = Instantiate(GameAssets.GetInstance().mgBody);
         mg1Transform = Instantiate(GameAssets.GetInstance().mgBody);
@@ -107,13 +120,11 @@ public class Level : MonoBehaviour
 				// any obstacles in the list above when one gets destroyed
 				obstacleList.Remove(obstacle);
 				i--;
-				
 			}
 		}
 	}
 
-    private void BackgroundMovement()
-    {
+    private void BackgroundMovement() {
         //moves the sprites across the screen
         mg1Transform.position += new Vector3(-1, 0, 0) * MIDGROUND_SPEED * Time.deltaTime;
         mg2Transform.position += new Vector3(-1, 0, 0) * MIDGROUND_SPEED * Time.deltaTime;

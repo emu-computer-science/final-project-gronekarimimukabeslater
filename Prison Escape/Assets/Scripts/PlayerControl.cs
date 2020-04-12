@@ -26,6 +26,9 @@ public class PlayerControl : MonoBehaviour {
     // Animation
     private Animator animator;
 	
+	// Death
+	public event EventHandler OnDeath;
+	
 	private static PlayerControl instance;
 	
 	public static PlayerControl GetInstance() {
@@ -100,8 +103,12 @@ public class PlayerControl : MonoBehaviour {
             health = GameAssets.GetInstance().reducehealth();
             other.gameObject.transform.position=new Vector2(-100f, -100f);
             if (health <= 0) {
-                SceneManager.LoadScene("Main");
-                GameAssets.GetInstance().resetScore();
+				body.bodyType = RigidbodyType2D.Static;
+				if (OnDeath != null) 
+					OnDeath(this, EventArgs.Empty);
+                PlayerPrefs.SetInt("Score", GameAssets.GetInstance().getScore());
+				SceneManager.LoadScene("GameOverMenu");
+				PlayerPrefs.SetInt("Score", GameAssets.GetInstance().getScore());
             } else {
                 updatePlayerLocationBasedOnHealth(true);
                 isDiving = false;
