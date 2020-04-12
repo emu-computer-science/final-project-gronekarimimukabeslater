@@ -11,6 +11,7 @@ public class GameAssets : MonoBehaviour {
 	private int score = 0;
     public Text txt;
     public Text health;
+	private bool recentImpact = false;
 
     private int Alive=3;
 
@@ -28,7 +29,7 @@ public class GameAssets : MonoBehaviour {
         health.text = "Health: " + Alive;
     }
 	
-	// Stores assets for obstacles that 
+	// Stores assets for obstacles
 	public Transform jumpObsBody;
 	public Transform duckObsBody;
 	public Transform diveObsBody;
@@ -38,10 +39,11 @@ public class GameAssets : MonoBehaviour {
     public Transform newGroundBody;
 
     public void increaseScore() {
-		score++;
-		Debug.Log("Current Score: " + score);
-        txt.text = "Current Score: " + score;
-
+		if (recentImpact == false) {
+			score++;
+			Debug.Log("Current Score: " + score);
+			txt.text = "Current Score: " + score;
+		}
     }
 	
 	public int getScore() {

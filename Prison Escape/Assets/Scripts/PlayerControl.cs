@@ -98,7 +98,7 @@ public class PlayerControl : MonoBehaviour {
         // The Collision is an "Enemy"
         if (other.gameObject.CompareTag("Enemy")) {
             health = GameAssets.GetInstance().reducehealth();
-            other.gameObject.transform.position=new Vector2(other.gameObject.transform.position.x, -100f);
+            other.gameObject.transform.position=new Vector2(-100f, -100f);
             if (health <= 0) {
                 SceneManager.LoadScene("Main");
                 GameAssets.GetInstance().resetScore();
