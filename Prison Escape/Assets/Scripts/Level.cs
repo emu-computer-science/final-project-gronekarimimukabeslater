@@ -159,8 +159,8 @@ public class Level : MonoBehaviour {
 		
 		SetDifficulty(GetDifficulty());
 		int obstacleType  = Random.Range(1, 4);
-		Debug.Log("Current Difficulty: " + GetDifficulty());
-
+		Debug.Log("Current Difficulty: " + GetDifficulty());	
+		
         // Obstacles to jump over
         if (obstacleType == 1) {
 			Transform jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
@@ -173,6 +173,8 @@ public class Level : MonoBehaviour {
             Transform diveObstacle = Instantiate(GameAssets.GetInstance().diveObsBody);
             diveObstacle.position = new Vector3(xPos, -1.7f); // Initial position for obstacle
             obstacleList.Add(new Obstacle(diveObstacle));
+			if (GetDifficulty() == Difficulty.Hard || GetDifficulty() == Difficulty.Hardest)
+				spawnTimer += 1f;
 		}
 		
 		// Obstacles to duck under
@@ -214,19 +216,19 @@ public class Level : MonoBehaviour {
 	private void SetDifficulty(Difficulty diff) {
 		switch(diff){
 		case(Difficulty.Easy):
-			spawnTimerMax = 2.4f;
+			spawnTimerMax = 2.7f;
 			break;
 		case(Difficulty.Easier):
-			spawnTimerMax = 2.1f;
+			spawnTimerMax = 2.4f;
 			break;
 		case(Difficulty.Medium):
-			spawnTimerMax = 1.8f;
+			spawnTimerMax = 2.1f;
 			break;
 		case(Difficulty.Hard):
-			spawnTimerMax = 1.5f;
+			spawnTimerMax = 1.8f;
 			break;
 		case(Difficulty.Hardest):
-			spawnTimerMax = 1.2f;
+			spawnTimerMax = 1.5f;
 			break;
 		}
 	}
