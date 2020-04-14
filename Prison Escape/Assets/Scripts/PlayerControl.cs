@@ -25,6 +25,9 @@ public class PlayerControl : MonoBehaviour {
     private float startDive;
     // Animation
     private Animator animator;
+    //Sound
+    AudioSource[] JumpSound;
+    AudioSource YellSound;
 	
 	// Death
 	public event EventHandler OnDeath;
@@ -48,6 +51,9 @@ public class PlayerControl : MonoBehaviour {
         animator.SetBool("Ducking", false);
         animator.SetBool("Landed", true);
         health = maxHealth;
+        //JumpSound = GetComponent<AudioSource>();
+        JumpSound = GetComponents<AudioSource>();
+        YellSound = GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -100,6 +106,14 @@ public class PlayerControl : MonoBehaviour {
         }
         // The Collision is an "Enemy"
         if (other.gameObject.CompareTag("Enemy")) {
+
+            try
+            {
+                JumpSound[1].Play();
+            }
+            catch {
+                Debug.Log("Audio not founded");
+            }
             health = GameAssets.GetInstance().reducehealth();
             other.gameObject.transform.position=new Vector2(-100f, -100f);
             if (health <= 0) {
@@ -128,6 +142,7 @@ public class PlayerControl : MonoBehaviour {
             animator.SetBool("Jump", true);
             animator.SetBool("Ducking", false);
         }
+        JumpSound[0].Play();
     }
 
     void handleDive() {
@@ -140,6 +155,7 @@ public class PlayerControl : MonoBehaviour {
         isDiving = true;
         startDive = Time.realtimeSinceStartup;
         animator.SetBool("Landed", false);
+        JumpSound[0].Play();
     }
 
     void handleDuck() {
