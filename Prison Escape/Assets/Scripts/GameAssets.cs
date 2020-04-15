@@ -11,6 +11,7 @@ public class GameAssets : MonoBehaviour {
 	private int score = 0;
     public Text txt;
     public Text health;
+    public Text highScore;
 	private bool recentImpact = false;
 
     private int Alive=3;
@@ -27,6 +28,7 @@ public class GameAssets : MonoBehaviour {
 
     public void Start() {
         health.text = "Health: " + Alive;
+        highScore.text = "High Score: " + PlayerPrefs.GetInt("highScore");
     }
 	
 	// Stores assets for obstacles
@@ -43,6 +45,9 @@ public class GameAssets : MonoBehaviour {
 			score++;
 			Debug.Log("Current Score: " + score);
 			txt.text = "Current Score: " + score;
+            if (score > PlayerPrefs.GetInt("highScore")) {
+                highScore.text = "High Score: " + score;
+            }
 		}
     }
 	

@@ -56,6 +56,7 @@ public class Level : MonoBehaviour {
 	
 	private void PlayerControl_OnDeath(object sender, System.EventArgs e) {
 		Debug.Log("Death!");
+		PlayerPrefs.SetInt("highScore", GameAssets.GetInstance().getScore());
 		state = State.Dead;
 	}
 

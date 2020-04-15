@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class StartMenuManager : MonoBehaviour {
+public class StartMenuManager : MonoBehaviour
+{
+
+    public Text highScore;
 
 	private const float OBSTACLE_SPEED = 5f; // Sets speed of obstacles moving towards player
     private const float FOREGROUND_SPEED = 3f; //Sets the speed of the background elements
@@ -21,15 +24,17 @@ public class StartMenuManager : MonoBehaviour {
 
 	public void Start() {
 		CreateBackground();
-	}
+        highScore.text = "High Score: " + PlayerPrefs.GetInt("highScore");
+    }
 
     public void StartGame() {
 		SceneManager.LoadScene("Main");
 	}
 	
-	private void Update() {
-		BackgroundMovement();
-	}
+	private void Update()
+    {
+        BackgroundMovement();
+    }
 	
 	public Transform bgBody;
     public Transform mgBody;

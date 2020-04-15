@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameOverMenuManager : MonoBehaviour
 {
 	public Text txt;
+    public Text highScore;
 	private int score;
 	private const float OBSTACLE_SPEED = 5f; // Sets speed of obstacles moving towards player
     private const float FOREGROUND_SPEED = 3f; //Sets the speed of the background elements
@@ -24,8 +25,9 @@ public class GameOverMenuManager : MonoBehaviour
 	public void Start() {
 		score = PlayerPrefs.GetInt("Score");
 		Debug.Log("Score " + score);
-		txt.text = "Your score: " + score;
-		CreateBackground();
+		txt.text = "Your Score: " + score;
+        highScore.text = "High Score: " + PlayerPrefs.GetInt("highScore");
+        CreateBackground();
 	}
 	
     public void StartGame() {
