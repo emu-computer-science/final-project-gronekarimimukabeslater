@@ -25,6 +25,22 @@ public class PlayerControl : MonoBehaviour {
     private float startDive;
     // Animation
     private Animator animator;
+    //Sound
+    AudioSource[] JumpSound;
+    AudioSource YellSound;
+	
+	// Death
+	public event EventHandler OnDeath;
+	
+	private static PlayerControl instance;
+	
+	public static PlayerControl GetInstance() {
+		return instance;
+	}
+	
+	private void Awake() {
+		instance = this;
+	}
     
     private void Start() {
         body = GetComponent<Rigidbody2D> ();
@@ -35,6 +51,9 @@ public class PlayerControl : MonoBehaviour {
         animator.SetBool("Ducking", false);
         animator.SetBool("Landed", true);
         health = maxHealth;
+        //JumpSound = GetComponent<AudioSource>();
+        JumpSound = GetComponents<AudioSource>();
+        YellSound = GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -80,11 +99,6 @@ public class PlayerControl : MonoBehaviour {
             // After Diving
             if (isDiving) {
                 updatePlayerLocationBasedOnHealth(true); // Resets player position
-                // Reset Colliders
-                var size = boxCollider.size;
-                boxCollider.size = new Vector2(size.x / 2, size.y * 2);
-                var offset = circleCollider.offset;
-                circleCollider.offset = new Vector2(offset.x, offset.y - 1.25f);
             }
             // Update Player Status
             isJumping = false;
@@ -92,11 +106,23 @@ public class PlayerControl : MonoBehaviour {
         }
         // The Collision is an "Enemy"
         if (other.gameObject.CompareTag("Enemy")) {
+
+            try
+            {
+                JumpSound[1].Play();
+            }
+            catch {
+                Debug.Log("Audio not founded");
+            }
             health = GameAssets.GetInstance().reducehealth();
-            other.gameObject.transform.position=new Vector2(other.gameObject.transform.position.x, -100f);
+            other.gameObject.transform.position=new Vector2(-100f, -100f);
             if (health <= 0) {
-                SceneManager.LoadScene("Main");
-                GameAssets.GetInstance().resetScore();
+				body.bodyType = RigidbodyType2D.Static;
+				if (OnDeath != null) 
+					OnDeath(this, EventArgs.Empty);
+                PlayerPrefs.SetInt("Score", GameAssets.GetInstance().getScore());
+				SceneManager.LoadScene("GameOverMenu");
+				PlayerPrefs.SetInt("Score", GameAssets.GetInstance().getScore());
             } else {
                 updatePlayerLocationBasedOnHealth(true);
                 isDiving = false;
@@ -116,6 +142,7 @@ public class PlayerControl : MonoBehaviour {
             animator.SetBool("Jump", true);
             animator.SetBool("Ducking", false);
         }
+        JumpSound[0].Play();
     }
 
     void handleDive() {
@@ -128,6 +155,7 @@ public class PlayerControl : MonoBehaviour {
         isDiving = true;
         startDive = Time.realtimeSinceStartup;
         animator.SetBool("Landed", false);
+        JumpSound[0].Play();
     }
 
     void handleDuck() {
@@ -144,7 +172,17 @@ public class PlayerControl : MonoBehaviour {
         float yPos = body.position.y;
         if (forceDefaultYPos) {
             yPos = -3.63f;
+            if (isDiving) {
+                var size = boxCollider.size;
+                boxCollider.size = new Vector2(size.x / 2, size.y * 2);
+                var offset = circleCollider.offset;
+                circleCollider.offset = new Vector2(offset.x, offset.y - 1.25f);
+            }
         }
         body.position = new Vector2(xPos,yPos);
     }
+	
+	public float GetPlayerPos() {
+		return body.position.x;
+	}
 }
