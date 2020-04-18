@@ -33,7 +33,8 @@ public class GameAssets : MonoBehaviour {
 	
 	// Stores assets for obstacles
 	public Transform jumpObsBody;
-	public Transform duckObsBody;
+    public Transform jumpObs2Body;
+    public Transform duckObsBody;
 	public Transform diveObsBody;
     public Transform bgBody;
     public Transform mgBody;

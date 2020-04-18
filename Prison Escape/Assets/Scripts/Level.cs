@@ -8,7 +8,8 @@ public class Level : MonoBehaviour {
 	private const float OBSTACLE_DESTROY_POSITION = -15f; // x Position past player where Obstacles get destroyed and score increases
 	private const float ENEMY_START_POSITION = 14f;
 	private const int JUMP_OBSTACLE = 1;
-	private const int DIVE_OBSTACLE = 2;
+    private const int JUMP_OBSTACLE2 = 4;
+    private const int DIVE_OBSTACLE = 2;
 	private const int DUCK_OBSTACLE = 3;
     private const float FOREGROUND_SPEED = 3f; //Sets the speed of the background elements
     private const float MIDGROUND_SPEED = 2f; //Sets the speed of the midground elements
@@ -159,21 +160,37 @@ public class Level : MonoBehaviour {
     private void spawnObstacle(float xPos) {
 		
 		SetDifficulty(GetDifficulty());
-		int obstacleType  = Random.Range(1, 4);
+		int obstacleType  = Random.Range(1, 5);
 		Debug.Log("Current Difficulty: " + GetDifficulty());	
 		
         // Obstacles to jump over
-        if (obstacleType == 1) {
-			Transform jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
-			jumpObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
-			obstacleList.Add(new Obstacle(jumpObstacle));
+        if (obstacleType == 1 || obstacleType == 4) {
+            Transform jumpObstacle;
+            float yPos;
+            bool running;
+            if (obstacleType ==1)
+            {
+                jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObsBody);
+                yPos = -3.5f;
+                running = false;
+            }
+            else
+            {
+                jumpObstacle = Instantiate(GameAssets.GetInstance().jumpObs2Body);
+                yPos = -4f;
+                running = true;
+            }
+
+            jumpObstacle.position = new Vector3(xPos, yPos); // Initial position for obstacle
+			obstacleList.Add(new Obstacle(jumpObstacle, running));
 		}
+
 		
 		// Obstacles to dive through
 		if (obstacleType == 2) {
             Transform diveObstacle = Instantiate(GameAssets.GetInstance().diveObsBody);
             diveObstacle.position = new Vector3(xPos, -1.7f); // Initial position for obstacle
-            obstacleList.Add(new Obstacle(diveObstacle));
+            obstacleList.Add(new Obstacle(diveObstacle, false));
 			if (GetDifficulty() == Difficulty.Hard || GetDifficulty() == Difficulty.Hardest)
 				spawnTimer += 1f;
 		}
@@ -183,7 +200,7 @@ public class Level : MonoBehaviour {
 			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
 			//duckObstacle.position = new Vector3(xPos, -2.0f); // Initial position for obstacle
             duckObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
-            obstacleList.Add(new Obstacle(duckObstacle));
+            obstacleList.Add(new Obstacle(duckObstacle, false));
 		}
 	}
 	
@@ -191,14 +208,19 @@ public class Level : MonoBehaviour {
 	private class Obstacle {
 		
 		private Transform obstacle;
+        private bool running; //check if obstacle is a moving obstacle to determine if it should move faster than ground
 		
-		public Obstacle(Transform t) {
+		public Obstacle(Transform t, bool r) {
 			this.obstacle = t;
+            this.running = r;
 		}
 		
 		public void move() {
-			obstacle.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
-		}
+            if(running == false)
+			    obstacle.position += new Vector3(-1, 0, 0) * OBSTACLE_SPEED * Time.deltaTime;
+            else
+                obstacle.position += new Vector3(-1, 0, 0) * (OBSTACLE_SPEED * 1.5f ) * Time.deltaTime; //makes object move faster than ground
+        }
 		
 		public float getXPos() {
 			return obstacle.position.x;
