@@ -35,7 +35,8 @@ public class GameAssets : MonoBehaviour {
 	public Transform jumpObsBody;
     public Transform jumpObs2Body;
     public Transform duckObsBody;
-	public Transform diveObsBody;
+    public Transform duckObs2Body;
+    public Transform diveObsBody;
     public Transform bgBody;
     public Transform mgBody;
     public Transform fgBody;

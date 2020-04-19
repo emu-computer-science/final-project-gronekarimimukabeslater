@@ -11,6 +11,7 @@ public class Level : MonoBehaviour {
     private const int JUMP_OBSTACLE2 = 4;
     private const int DIVE_OBSTACLE = 2;
 	private const int DUCK_OBSTACLE = 3;
+    private const int DUCK_OBSTACLE2 = 5;
     private const float FOREGROUND_SPEED = 3f; //Sets the speed of the background elements
     private const float MIDGROUND_SPEED = 2f; //Sets the speed of the midground elements
     private const float BACKGROUND_SPEED = 1f; //Sets the speed of the background elements
@@ -160,7 +161,7 @@ public class Level : MonoBehaviour {
     private void spawnObstacle(float xPos) {
 		
 		SetDifficulty(GetDifficulty());
-		int obstacleType  = Random.Range(1, 5);
+		int obstacleType  = Random.Range(1, 6);
 		Debug.Log("Current Difficulty: " + GetDifficulty());	
 		
         // Obstacles to jump over
@@ -196,11 +197,26 @@ public class Level : MonoBehaviour {
 		}
 		
 		// Obstacles to duck under
-		if (obstacleType == 3) {
-			Transform duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
+		if (obstacleType == 3 || obstacleType == 5) {
+            Transform duckObstacle;
+            float yPos;
+            bool moving;
+            if(obstacleType ==3)
+            {
+                duckObstacle = Instantiate(GameAssets.GetInstance().duckObsBody);
+                yPos = -3.5f;
+                moving = false;
+            }
+            else
+            {
+                duckObstacle = Instantiate(GameAssets.GetInstance().duckObs2Body);
+                yPos = 0f;
+                moving = true;
+            }
+            
 			//duckObstacle.position = new Vector3(xPos, -2.0f); // Initial position for obstacle
-            duckObstacle.position = new Vector3(xPos, -3.5f); // Initial position for obstacle
-            obstacleList.Add(new Obstacle(duckObstacle, false));
+            duckObstacle.position = new Vector3(xPos, yPos); // Initial position for obstacle
+            obstacleList.Add(new Obstacle(duckObstacle, moving));
 		}
 	}
 	

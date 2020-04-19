@@ -870,6 +870,8 @@ MonoBehaviour:
     type: 3}
   duckObsBody: {fileID: 5393311185835574829, guid: bc732e8d964b04c4e8961f1db454026c,
     type: 3}
+  duckObs2Body: {fileID: 637077222629645022, guid: 16b6a006ea6d399428eea2803baa0773,
+    type: 3}
   diveObsBody: {fileID: 1666315657522537770, guid: e3ae8c33e16539548b4a1e2eb10aab06,
     type: 3}
   bgBody: {fileID: 7952227911338049942, guid: 26bf6c0128f28fd468de529c3aa9d681, type: 3}
