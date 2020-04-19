@@ -121,36 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &55344594
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 55344595}
-  m_Layer: 0
-  m_Name: Dog
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &55344595
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 55344594}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 496.6883, y: 56.317802, z: -700.817}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &59794455
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +866,11 @@ MonoBehaviour:
   highScore: {fileID: 1555769860}
   jumpObsBody: {fileID: 564596124600435071, guid: 63b361d893dec864f9254f8d773f23ea,
     type: 3}
+  jumpObs2Body: {fileID: 305090596154120693, guid: 08ef4c7ea46a3be4083299baa7ffaeb1,
+    type: 3}
   duckObsBody: {fileID: 5393311185835574829, guid: bc732e8d964b04c4e8961f1db454026c,
+    type: 3}
+  duckObs2Body: {fileID: 637077222629645022, guid: 16b6a006ea6d399428eea2803baa0773,
     type: 3}
   diveObsBody: {fileID: 1666315657522537770, guid: e3ae8c33e16539548b4a1e2eb10aab06,
     type: 3}
@@ -1307,7 +1281,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1460207356
 GameObject:
@@ -1434,7 +1408,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1555769859
 GameObject:
